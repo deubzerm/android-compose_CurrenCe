@@ -19,9 +19,9 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80,
+    primary = Dark1,
+    secondary = Dark2,
+    tertiary = Dark3,
     background = Color(0xFF272727)
 )
 
@@ -29,7 +29,7 @@ private val LightColorScheme = lightColorScheme(
     primary = Purple40,
     secondary = PurpleGrey40,
     tertiary = Pink40,
-    background = Color(0xFFDADADA)
+    background = Color(0xFF9E2222)
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -44,10 +44,10 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun JetpacktutorialTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
+darkTheme: Boolean = isSystemInDarkTheme(),
+// Dynamic color is available on Android 12+
+dynamicColor: Boolean = true,
+content: @Composable () -> Unit
 ) {
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {

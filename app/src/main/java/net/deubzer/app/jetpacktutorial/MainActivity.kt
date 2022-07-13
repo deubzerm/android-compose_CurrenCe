@@ -2,166 +2,159 @@ package net.deubzer.app.jetpacktutorial
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.activity.viewModels
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import net.deubzer.app.jetpacktutorial.ui.theme.JetpacktutorialTheme
+import net.deubzer.app.jetpacktutorial.ui.theme.PADDING_DEFAULT
+import net.deubzer.app.jetpacktutorial.viewmodel.CurrencyViewModel
+import net.deubzer.app.jetpacktutorial.viewmodel.CurrencyViewModelFactory
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class MainActivity : ComponentActivity() {
+
+    private val viewModel: CurrencyViewModel by viewModels { CurrencyViewModelFactory() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            //Text("Hello world!")
             JetpacktutorialTheme {
-                //MessageCard(message = "positin am 23.6.2022 um 14:43", info = "48.23N 12.3E")
-                CurrencyMain()
+                CurrencyMain(viewModel)
             }
         }
     }
 }
 
+
+//@Preview(
+//    //uiMode = Configuration.UI_MODE_NIGHT_YES,
+//    uiMode = 1,
+//    name = "Main",
+//    showSystemUi = true,
+//    showBackground = true
+//)
+@Preview("Screen", showSystemUi = false, showBackground = true)
+@Preview("Screen (dark)",showSystemUi = true, showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun Greeting(name: String) {
-    Row(){
-        Text(text = "Hello $name!", modifier = Modifier.align(Alignment.Bottom))
-        Text(text = "whhaa $name", modifier = Modifier.align(Alignment.Bottom))
+fun PreviewCurrencyMain() {
+    val viewModel = CurrencyViewModel()
+    JetpacktutorialTheme {
+        CurrencyMain(viewModel)
     }
 }
 
-
 @Composable
-fun MessageCard(message: String, info: String) {
-    Row(
-        Modifier
-            .background(Color.White)
-            .clip(RoundedCornerShape(15))
+fun CurrencyMain(viewModel: CurrencyViewModel) {
+    Column (
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.vitoshakite),
-            contentDescription = "image for test",
-            modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .border(1.5.dp, MaterialTheme.colorScheme.secondary, CircleShape)
-                .align(Alignment.CenterVertically)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Column {
-
-            Text(text = message, fontSize = 36.sp, lineHeight = 40.sp)
-            Spacer(modifier = Modifier.height(4.dp))
-            Surface(
-                shape = MaterialTheme.shapes.medium,
-                shadowElevation = 1.dp,
-            ) {
-                Text(
-                    text = info,
-                    modifier = Modifier
-                        .padding(horizontal = 5.dp, vertical = 2.dp)
-                        .background(MaterialTheme.colorScheme.background),
-                    color = MaterialTheme.colorScheme.secondary,
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    JetpacktutorialTheme {
-        MessageCard(message = "bob am 12.4.2022 um 13.33", info = " 12E 14N")
-    }
-}
-
-@Preview(name = "Light Mode")
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true,
-    name = "Dark Mode"
-)
-@Composable
-fun PreviewMessageCard() {
-    JetpacktutorialTheme {
-        MessageCard(message = "Rabbitmq könnte HIER was schreiben!", info = "48.1N 10.2E")
-    }
-}
-
-@Preview
-@Composable
-fun PreviewCurrencyMain(){
-    JetpacktutorialTheme {
-        CurrencyMain()
-    }
-}
-
-@Composable
-fun CurrencyMain() {
-    var currencyConverted = "0"
-    Column {
-        CurrencyInput(currencyConverted)
+        CurrencyLevInput(viewModel)
         Spacer(modifier = Modifier.height(40.dp))
-        CurrencyConverted((currencyConverted.toInt() * 0.51).toString())
+        CurrencyEurInput(viewModel)
     }
 }
 
 @Composable
-private fun CurrencyConverted(currencyConverted: String) {
-    var currencyConverted1 = currencyConverted
+fun CurrencyLevInput(currencyVM: CurrencyViewModel) {
     OutlinedTextField(
-        value = "text",
-        onValueChange = { currencyConverted1 = it },
-        label = { Text("€uro") },
+        value = currencyVM.amountLev.value,
+        onValueChange = { it ->
+            currencyVM.changeAmountLev(it)
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         maxLines = 1,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-    )
-}
-
-
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true,
-    name = "Dark Mode"
-)
-@Composable
-fun PreviewCurrencyInput(){
-    JetpacktutorialTheme() {
-        CurrencyInput("23")
-    }
-}
-
-@Composable
-fun CurrencyInput(currencyConverted: String) {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
-    OutlinedTextField(
-        value = text,
-        onValueChange = { text = it },
         label = { Text("лева") },
-        maxLines = 1,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        modifier = Modifier
+            .fillMaxWidth().padding(PADDING_DEFAULT),
+        trailingIcon = {
+            Icon(
+                Icons.Default.Clear,
+                contentDescription = "clear text",
+                modifier = Modifier
+                    .clickable {
+                        currencyVM.clear()
+                    }
+            )
+        }
     )
 }
+
+@Composable
+private fun CurrencyEurInput(currencyVM: CurrencyViewModel) {
+
+    OutlinedTextField(
+        value = currencyVM.amountEur.value,
+
+        onValueChange = { it ->
+            currencyVM.changeAmountEur(it)
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        maxLines = 1,
+        label = { Text("€ur") },
+        trailingIcon = {
+            Icon(
+                Icons.Default.Clear,
+                contentDescription = "clear text",
+                modifier = Modifier
+                    .clickable {
+                        currencyVM.clear()
+                    }
+            )
+        },
+        modifier = Modifier
+            .fillMaxWidth().padding(PADDING_DEFAULT)
+    )
+
+}
+
+fun sanitizeFloatStringInput(dirtyStr: String): Float {
+    val m1 = dirtyStr.trim().replace(",", ".")
+
+    val spl = m1.split(".")
+
+    if (spl.size > 2) {
+        return (spl[0] + "." + spl[1]).toFloat()
+    }
+    return m1.toFloat()
+}
+
+
+//@Preview(
+//    uiMode = Configuration.UI_MODE_NIGHT_NO,
+//    showBackground = true,
+//    name = "Dark Mode"
+//)
+//@Composable
+//fun PreviewCurrencyInput() {
+//    val viewModel = CurrencyViewModel()
+//    JetpacktutorialTheme() {
+//        CurrencyLevInput(viewModel)
+//    }
+//}
+
+
+
+
+
+
+
 
 
