@@ -1,5 +1,6 @@
 package net.deubzer.app.jetpacktutorial.viewmodel
 
+import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -29,13 +30,24 @@ class CurrencyViewModel() : ViewModel() {
     }
 
     fun changeAmountLev(amount: String  ) {
-        //if(amount.isNotEmpty() or amount.isNotBlank()) return
+        if(amount.isEmpty()) {
+            resetCurrencyToZero()
+            return
+        }
         this.amountLev.value = amount
         this.amountEur.value = calcEur(amount)
     }
 
+    private fun resetCurrencyToZero() {
+       this.amountLev.value = ""
+       this.amountEur.value = ""
+    }
+
     fun changeAmountEur(amount: String) {
-        //if(amount.isNotEmpty() or amount.isNotBlank()) return
+        if(amount.isEmpty()){
+            resetCurrencyToZero()
+            return
+        }
         this.amountEur.value = amount
         this.amountLev.value = calcLev(amount)
     }
@@ -60,6 +72,12 @@ class CurrencyViewModel() : ViewModel() {
 
     fun onDialogDismiss() {
         _showDialog.value = false
+    }
+
+    fun validateCurrencyInput(it: String) : Boolean {
+        val amnt = it.toFloatOrNull()
+        if(it.isEmpty()) return true
+        return amnt != null
     }
 
 }

@@ -77,7 +77,9 @@ fun CurrencyLevInput(currencyVM: CurrencyViewModel) {
     OutlinedTextField(
         value = currencyVM.amountLev.value,
         onValueChange = { it ->
-            currencyVM.changeAmountLev(it)
+            if(currencyVM.validateCurrencyInput(it)){
+                currencyVM.changeAmountLev(it)
+            }
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         maxLines = 1,
@@ -104,7 +106,9 @@ private fun CurrencyEurInput(currencyVM: CurrencyViewModel) {
         value = currencyVM.amountEur.value,
 
         onValueChange = { it ->
-            currencyVM.changeAmountEur(it)
+            if(currencyVM.validateCurrencyInput(it)) {
+                currencyVM.changeAmountEur(it)
+            }
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         maxLines = 1,
