@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_PARAMETER", "UNUSED_EXPRESSION")
+
 package net.deubzer.app.jetpacktutorial.components
 
 import android.widget.Button
@@ -18,7 +20,7 @@ import net.deubzer.app.jetpacktutorial.ui.theme.JetpacktutorialTheme
 //): Unit
 
 @Composable
-public fun AlertDialog(
+fun AlertDialog(
     onDismissRequest: () -> Unit,
     confirmButton: @Composable () -> Unit,
     dismissButton: @Composable () -> Unit,
@@ -55,7 +57,7 @@ fun SimpleAlertDialog(
 }
 
 @Composable
-public fun TextButton(
+fun TextButton(
     onClick: () -> Unit,
     content: @Composable RowScope.() -> Unit
 ) {
