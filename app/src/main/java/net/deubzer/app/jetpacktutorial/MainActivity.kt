@@ -2,7 +2,6 @@ package net.deubzer.app.jetpacktutorial
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -18,12 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import net.deubzer.app.jetpacktutorial.components.RadioButtonCurrencyChoice
 import net.deubzer.app.jetpacktutorial.ui.theme.JetpacktutorialTheme
 import net.deubzer.app.jetpacktutorial.ui.theme.PADDING_DEFAULT
 import net.deubzer.app.jetpacktutorial.viewmodel.CurrencyViewModel
 import net.deubzer.app.jetpacktutorial.viewmodel.CurrencyViewModelFactory
-import java.math.RoundingMode
-import java.text.DecimalFormat
 
 class MainActivity : ComponentActivity() {
 
@@ -47,7 +45,7 @@ class MainActivity : ComponentActivity() {
 //    showSystemUi = true,
 //    showBackground = true
 //)
-@Preview("Screen", showSystemUi = false, showBackground = true)
+@Preview("Screen", showSystemUi = true, showBackground = true)
 @Preview("Screen (dark)",showSystemUi = true, showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewCurrencyMain() {
@@ -61,11 +59,16 @@ fun PreviewCurrencyMain() {
 fun CurrencyMain(viewModel: CurrencyViewModel) {
     Column (
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro","Dinar"), viewModel, 1)
         CurrencyLevInput(viewModel)
         Spacer(modifier = Modifier.height(40.dp))
         CurrencyEurInput(viewModel)
+        Button(onClick = { /*TODO*/ }) {
+        }
+        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro","Dinar"), viewModel, 2)
     }
 }
 
@@ -79,11 +82,12 @@ fun CurrencyLevInput(currencyVM: CurrencyViewModel) {
                 currencyVM.changeAmountLev(it)
             }
         },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
         maxLines = 1,
         label = { Text("лева") },
         modifier = Modifier
-            .fillMaxWidth().padding(PADDING_DEFAULT),
+            .fillMaxWidth()
+            .padding(PADDING_DEFAULT),
         trailingIcon = {
             Icon(
                 Icons.Default.Clear,
@@ -123,7 +127,8 @@ private fun CurrencyEurInput(currencyVM: CurrencyViewModel) {
             )
         },
         modifier = Modifier
-            .fillMaxWidth().padding(PADDING_DEFAULT)
+            .fillMaxWidth()
+            .padding(PADDING_DEFAULT)
     )
 
 }
