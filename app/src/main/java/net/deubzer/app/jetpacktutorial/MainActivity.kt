@@ -1,5 +1,6 @@
 package net.deubzer.app.jetpacktutorial
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,7 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import net.deubzer.app.jetpacktutorial.components.RadioButtonCurrencyChoice
+import net.deubzer.app.jetpacktutorial.data.ExchangeSerializer
+import net.deubzer.app.jetpacktutorial.datastore.Currency
+import net.deubzer.app.jetpacktutorial.datastore.CurrencyRate
+import net.deubzer.app.jetpacktutorial.datastore.Exchange
 import net.deubzer.app.jetpacktutorial.ui.theme.JetpacktutorialTheme
 import net.deubzer.app.jetpacktutorial.ui.theme.PADDING_DEFAULT
 import net.deubzer.app.jetpacktutorial.viewmodel.CurrencyViewModel
@@ -27,12 +36,25 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: CurrencyViewModel by viewModels { CurrencyViewModelFactory() }
 
+    private val Context.eDs: DataStore<Exchange> by dataStore(fileName = "exC.rb", serializer = ExchangeSerializer)
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             JetpacktutorialTheme {
                 CurrencyMain(viewModel)
             }
+        }
+
+        lifecycleScope.launch{
+            eDs.updateData { e ->
+                e.toBuilder().addExchange(
+                    CurrencyRate.newBuilder()
+                        .setFROMValue(Currency.EUR_VALUE)
+                        .setTOValue(Currency.LEV_VALUE)
+                        .setFactor(1.96).build()).build() }
         }
     }
 }
