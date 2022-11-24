@@ -1,16 +1,12 @@
 package net.deubzer.app.jetpacktutorial.viewmodel
 
-import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import net.deubzer.app.jetpacktutorial.data.CurrencyExchangeRepository
-import net.deubzer.app.jetpacktutorial.data.ExchangeSerializer
 import net.deubzer.app.jetpacktutorial.datastore.Exchange
 import net.deubzer.app.jetpacktutorial.util.CurrencyEnum
 import net.deubzer.app.jetpacktutorial.util.calcEur
@@ -21,6 +17,7 @@ import net.objecthunter.exp4j.ExpressionBuilder
 
 class CurrencyViewModel() : ViewModel() {
 
+    private var exchangeDatastore: DataStore<Exchange>? = null
 
 
     private val _showDialog = MutableStateFlow(false)
@@ -37,7 +34,6 @@ class CurrencyViewModel() : ViewModel() {
     val currencyTo = mutableStateOf(CurrencyEnum.EUR)
 
     init {
-
         // changeAmountLev(0f)
         // changeAmountEur(0f)
     }
@@ -117,6 +113,10 @@ class CurrencyViewModel() : ViewModel() {
             "Euro" -> currencyTo.value = CurrencyEnum.EUR
             "Dinar" -> currencyTo.value = CurrencyEnum.DIN
         }
+    }
+
+    fun setRepository(eDs: DataStore<Exchange>) {
+        if (exchangeDatastore == null) exchangeDatastore = eDs
     }
 }
 

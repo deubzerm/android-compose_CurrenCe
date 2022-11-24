@@ -34,13 +34,14 @@ import net.deubzer.app.jetpacktutorial.viewmodel.CurrencyViewModelFactory
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: CurrencyViewModel by viewModels { CurrencyViewModelFactory() }
-
     private val Context.eDs: DataStore<Exchange> by dataStore(fileName = "exC.rb", serializer = ExchangeSerializer)
+
+    private val viewModel: CurrencyViewModel by viewModels { CurrencyViewModelFactory() }
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        viewModel.setRepository(eDs)
         super.onCreate(savedInstanceState)
         setContent {
             JetpacktutorialTheme {
