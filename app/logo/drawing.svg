@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg5"
+   inkscape:export-filename="C:\Users\md\Projects\Android_jetpack_tutorial\app\src\main\res\logo\CurrenCe.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="drawing.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#111111"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="px"
+     showgrid="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:zoom="1.2056723"
+     inkscape:cx="230.99146"
+     inkscape:cy="105.75013"
+     inkscape:window-width="2560"
+     inkscape:window-height="1387"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <linearGradient
+       id="linearGradient3122"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop3120" />
+    </linearGradient>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g29020"
+       transform="matrix(1.2882389,0,0,1.2882389,-49.178417,-95.315336)">
+      <path
+         style="fill:#6600ff;stroke:#000000;stroke-width:4.25584;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 243.0969,335.41263 c 5.57252,-47.71932 -6.2319,-62.71256 70.08881,-149.55328 l -72.3868,-21.69988 c -24.54027,35.25564 -40.99948,85.65809 -44.23638,129.61284"
+         id="path5553-7-5"
+         sodipodi:nodetypes="cccc" />
+      <text
+         xml:space="preserve"
+         style="font-weight:bold;font-size:74.6667px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#2aff80"
+         x="283.87042"
+         y="182.10925"
+         id="text23640"
+         transform="matrix(1,0.24776077,-0.36034925,0.91071959,0,0)"><tspan
+           sodipodi:role="line"
+           id="tspan23638"
+           x="283.87042"
+           y="182.10925">$</tspan></text>
+      <path
+         style="fill:#ffd42a;stroke:#000000;stroke-width:4.23171;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 235.59452,364.7368 c -5.5095,-47.71932 6.16142,-62.71256 -69.29616,-149.55328 l 71.56816,-21.69988 c 24.26274,35.25564 40.53581,85.65809 43.7361,129.61284"
+         id="path5553-7-5-2"
+         sodipodi:nodetypes="cccc" />
+      <text
+         xml:space="preserve"
+         style="font-weight:bold;font-size:64.0451px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#d35f5f;stroke-width:0.857747"
+         x="117.0772"
+         y="328.05945"
+         id="text28252"
+         transform="matrix(1.0381743,-0.14971744,0.32309229,0.91663552,0,0)"><tspan
+           sodipodi:role="line"
+           id="tspan28250"
+           x="117.0772"
+           y="328.05945"
+           style="stroke-width:0.857747">¥</tspan></text>
+      <path
+         style="fill:#ff7f2a;stroke:#000000;stroke-width:4.25584;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 300.55568,333.06972 c 14.82865,-45.2835 13.40186,-57.54578 70.08881,-149.55328 l -72.3868,-21.69988 c -24.54027,35.25564 -56.24805,143.71995 -59.48495,187.6747"
+         id="path5553-7"
+         sodipodi:nodetypes="cccc" />
+      <path
+         style="fill:#008080;stroke:#000000;stroke-width:4.3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 177.11799,366.55212 C 173.77098,312.53311 163.05101,256.38282 107.32646,204.6827 l 70.96449,-22.87285 c 44.40617,19.42058 70.88526,128.4155 74.18968,172.37025"
+         id="path5553"
+         sodipodi:nodetypes="cccc" />
+      <path
+         style="fill:none;stroke:#da3900;stroke-width:31.1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 126.68041,266.84994 C -25.45924,453.74406 462.10191,351.4837 363.6197,236.93929"
+         id="path923"
+         sodipodi:nodetypes="cc" />
+      <text
+         xml:space="preserve"
+         style="font-weight:bold;font-size:74.6667px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#dbdbe3"
+         x="36.729683"
+         y="354.87778"
+         id="text15594"
+         transform="matrix(0.94153926,-0.35676884,0.42210245,0.90214719,0,0)"><tspan
+           sodipodi:role="line"
+           id="tspan15592"
+           x="36.729683"
+           y="354.87778"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#dbdbe3">€</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-weight:bold;font-size:60.0756px;line-height:1.25;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#00ccff;stroke-width:0.804584"
+         x="-138.04015"
+         y="291.90582"
+         id="text26210"
+         transform="matrix(0.32663978,-0.90829122,0.91961486,0.5042922,0,0)"><tspan
+           sodipodi:role="line"
+           id="tspan26208"
+           x="-138.04015"
+           y="291.90582"
+           style="stroke-width:0.804584"></tspan><tspan
+           sodipodi:role="line"
+           x="-138.04015"
+           y="367.00034"
+           id="tspan26212"
+           style="stroke-width:0.804584">лв</tspan></text>
+    </g>
+  </g>
+</svg>

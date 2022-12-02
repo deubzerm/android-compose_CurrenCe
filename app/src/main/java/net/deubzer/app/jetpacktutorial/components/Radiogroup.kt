@@ -55,8 +55,8 @@ fun RadioButtonCurrencyChoice(choices: List<String>, viewModel: CurrencyViewMode
                     selected = (text == selectedOption),
                     //onClick = { onOptionSelected(text) }
                     onClick = { when(radioSetterMode){
-                        1 -> viewModel.setCurrencyFrom(text)
-                        2 -> viewModel.setCurrencyTo(text)
+                        1 -> viewModel.setCurrencyFrom(selectedOption)
+                        2 -> viewModel.setCurrencyTo(selectedOption)
                     } }
                 )
                 Text(
