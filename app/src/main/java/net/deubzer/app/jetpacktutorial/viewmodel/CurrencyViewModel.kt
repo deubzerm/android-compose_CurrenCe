@@ -4,95 +4,52 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import net.deubzer.app.jetpacktutorial.datastore.Exchange
 import net.deubzer.app.jetpacktutorial.util.CurrencyEnum
-import net.deubzer.app.jetpacktutorial.util.calcEur
-import net.deubzer.app.jetpacktutorial.util.calcLev
-import net.objecthunter.exp4j.Expression
-import net.objecthunter.exp4j.ExpressionBuilder
+import net.deubzer.app.jetpacktutorial.util.calculateCurrencies
 
 
-class CurrencyViewModel() : ViewModel() {
+class CurrencyViewModel : ViewModel() {
 
     private var exchangeDatastore: DataStore<Exchange>? = null
 
 
-    private val _showDialog = MutableStateFlow(false)
-    val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
-
     //todo: change to string, do parsing in sanitize! Float causes weird typing in the inputfield.
     // probably do a shadow state field
     // idea: store old values in  room
-    val amountLev = mutableStateOf("")
-
-    val amountEur = mutableStateOf("")
+    val amountTop = mutableStateOf("")
+    val amountBottom = mutableStateOf("")
 
     val currencyFrom = mutableStateOf(CurrencyEnum.LEW)
     val currencyTo = mutableStateOf(CurrencyEnum.EUR)
 
     init {
-        // changeAmountLev(0f)
-        // changeAmountEur(0f)
     }
 
-    fun changeAmountLev(amount: String) {
-        if (amount.isEmpty()) {
-            resetCurrencyToZero()
-            return
-        }
-        CalculateCurrencyValues(amount)
+    private fun reCalcTop() {
+        this.amountTop.value = calculateCurrencies(
+            amountTop.value.toConvertableFloat(), Pair(currencyFrom.value, currencyTo.value)
+        ).first.toString()
+        this.amountBottom.value = calculateCurrencies(
+            amountTop.value.toConvertableFloat(), Pair(currencyFrom.value, currencyTo.value)
+        ).second.toString()
     }
 
-    private fun CalculateCurrencyValues(amount: String) {
-        this.amountLev.value = amount.EvaluateCalc()
-        this.amountEur.value = calcEur(amount, currencyFrom.value)
+    private fun reCalcBottom() {
+        this.amountBottom.value = calculateCurrencies(
+            amountBottom.value.toConvertableFloat(), Pair(currencyTo.value, currencyFrom.value)
+        ).first.toString()
+        this.amountTop.value = calculateCurrencies(
+            amountBottom.value.toConvertableFloat(), Pair(currencyTo.value, currencyFrom.value)
+        ).second.toString()
     }
 
-    private fun resetCurrencyToZero() {
-        this.amountLev.value = ""
-        this.amountEur.value = ""
-    }
-
-    fun changeAmountEur(amount: String) {
-        if (amount.isEmpty()) {
-            resetCurrencyToZero()
-            return
-        }
-        this.amountEur.value = amount.EvaluateCalc()
-        this.amountLev.value = calcLev(amount)
-    }
 
     fun clear() {
-        this.amountEur.value = ""
-        this.amountLev.value = ""
+        this.amountBottom.value = ""
+        this.amountTop.value = ""
     }
 
-    fun showCurrencies(): String {
-        return "€: " + amountEur.value + "; Lev: " + amountLev.value
-    }
-
-    fun onOpenDialogClicked() {
-        _showDialog.value = true
-    }
-
-    fun onDialogConfirm() {
-        _showDialog.value = false
-        // Continue with executing the confirmed action
-    }
-
-    fun onDialogDismiss() {
-        _showDialog.value = false
-    }
-
-    fun validateCurrencyInput(it: String): Boolean {
-//        val amnt = it.toFloatOrNull()
-//        if(it.isEmpty()) return true
-//        return amnt != null
-        return true
-    }
 
     fun setCurrencyFrom(text: String) {
         when (text) {
@@ -100,12 +57,9 @@ class CurrencyViewModel() : ViewModel() {
             "Euro" -> currencyFrom.value = CurrencyEnum.EUR
             "Dinar" -> currencyFrom.value = CurrencyEnum.DIN
         }
-        reCalc()
+        reCalcTop()
     }
 
-    private fun reCalc() {
-        TODO("Not yet implemented")
-    }
 
     fun setCurrencyTo(text: String) {
         when (text) {
@@ -113,33 +67,34 @@ class CurrencyViewModel() : ViewModel() {
             "Euro" -> currencyTo.value = CurrencyEnum.EUR
             "Dinar" -> currencyTo.value = CurrencyEnum.DIN
         }
+        reCalcBottom()
     }
 
     fun setRepository(eDs: DataStore<Exchange>) {
         if (exchangeDatastore == null) exchangeDatastore = eDs
     }
-}
 
-private fun String.EvaluateCalc(): String {
-
-
-    var txt: String = this
-
-    val expression: Expression = ExpressionBuilder(txt).build()
-    try {
-        // Calculate the result and display
-        val result: Double = expression.evaluate()
-        txt = this
-    } catch (ex: ArithmeticException) {
-        // Display an error message
-        return "0"
+    fun changeTop(it: Float?) {
+        if (it != null) {
+            this.amountTop.value = it.toString()
+            reCalcTop()
+        }
     }
 
-    return txt
-
+    fun changeBottom(it: Float?) {
+        if (it != null) {
+            this.amountBottom.value = it.toString()
+            reCalcBottom()
+        }
+    }
 }
 
-class CurrencyViewModelFactory() : ViewModelProvider.Factory {
+private fun String.toConvertableFloat(): Float {
+    if (this.isEmpty()) return 0f
+    return this.toFloat()
+}
+
+class CurrencyViewModelFactory : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CurrencyViewModel::class.java)) {

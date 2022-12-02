@@ -34,10 +34,12 @@ import net.deubzer.app.jetpacktutorial.viewmodel.CurrencyViewModelFactory
 
 class MainActivity : ComponentActivity() {
 
-    private val Context.eDs: DataStore<Exchange> by dataStore(fileName = "exC.rb", serializer = ExchangeSerializer)
+    private val Context.eDs: DataStore<Exchange> by dataStore(
+        fileName = "exC.rb",
+        serializer = ExchangeSerializer
+    )
 
     private val viewModel: CurrencyViewModel by viewModels { CurrencyViewModelFactory() }
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,13 +51,15 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        lifecycleScope.launch{
+        lifecycleScope.launch {
             eDs.updateData { e ->
                 e.toBuilder().addExchange(
                     CurrencyRate.newBuilder()
                         .setFROMValue(Currency.EUR_VALUE)
                         .setTOValue(Currency.LEV_VALUE)
-                        .setFactor(1.96).build()).build() }
+                        .setFactor(1.96).build()
+                ).build()
+            }
         }
     }
 }
@@ -69,7 +73,12 @@ class MainActivity : ComponentActivity() {
 //    showBackground = true
 //)
 @Preview("Screen", showSystemUi = true, showBackground = true)
-@Preview("Screen (dark)",showSystemUi = true, showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(
+    "Screen (dark)",
+    showSystemUi = true,
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 fun PreviewCurrencyMain() {
     val viewModel = CurrencyViewModel()
@@ -80,18 +89,18 @@ fun PreviewCurrencyMain() {
 
 @Composable
 fun CurrencyMain(viewModel: CurrencyViewModel) {
-    Column (
+    Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro","Dinar"), viewModel, 1)
+        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro", "Dinar"), viewModel, 1)
         CurrencyLevInput(viewModel)
         Spacer(modifier = Modifier.height(40.dp))
         CurrencyEurInput(viewModel)
         Button(onClick = { /*TODO*/ }) {
         }
-        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro","Dinar"), viewModel, 2)
+        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro", "Dinar"), viewModel, 2)
     }
 }
 
@@ -99,11 +108,9 @@ fun CurrencyMain(viewModel: CurrencyViewModel) {
 @Composable
 fun CurrencyLevInput(currencyVM: CurrencyViewModel) {
     OutlinedTextField(
-        value = currencyVM.amountLev.value,
-        onValueChange = { it ->
-            if(currencyVM.validateCurrencyInput(it)){
-                currencyVM.changeAmountLev(it)
-            }
+        value = currencyVM.amountTop.value,
+        onValueChange = {
+            currencyVM.changeTop(it.replace(",", ".").toFloatOrNull())
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
         maxLines = 1,
@@ -129,12 +136,10 @@ fun CurrencyLevInput(currencyVM: CurrencyViewModel) {
 private fun CurrencyEurInput(currencyVM: CurrencyViewModel) {
 
     OutlinedTextField(
-        value = currencyVM.amountEur.value,
+        value = currencyVM.amountBottom.value,
 
-        onValueChange = { it ->
-            if(currencyVM.validateCurrencyInput(it)) {
-                currencyVM.changeAmountEur(it)
-            }
+        onValueChange = {
+            currencyVM.changeBottom(it.replace(",", ".").toFloatOrNull())
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         maxLines = 1,
@@ -155,31 +160,6 @@ private fun CurrencyEurInput(currencyVM: CurrencyViewModel) {
     )
 
 }
-
-fun sanitizeFloatStringInput(dirtyStr: String): Float {
-    val m1 = dirtyStr.trim().replace(",", ".")
-
-    val spl = m1.split(".")
-
-    if (spl.size > 2) {
-        return (spl[0] + "." + spl[1]).toFloat()
-    }
-    return m1.toFloat()
-}
-
-
-//@Preview(
-//    uiMode = Configuration.UI_MODE_NIGHT_NO,
-//    showBackground = true,
-//    name = "Dark Mode"
-//)
-//@Composable
-//fun PreviewCurrencyInput() {
-//    val viewModel = CurrencyViewModel()
-//    JetpacktutorialTheme() {
-//        CurrencyLevInput(viewModel)
-//    }
-//}
 
 
 
