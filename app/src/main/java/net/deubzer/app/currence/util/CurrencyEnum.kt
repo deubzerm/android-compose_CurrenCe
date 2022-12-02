@@ -1,4 +1,4 @@
-package net.deubzer.app.jetpacktutorial.util
+package net.deubzer.app.currence.util
 
 enum class CurrencyEnum {
     LEW,

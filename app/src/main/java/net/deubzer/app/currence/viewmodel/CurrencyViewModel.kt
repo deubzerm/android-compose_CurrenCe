@@ -1,18 +1,13 @@
-package net.deubzer.app.jetpacktutorial.viewmodel
+package net.deubzer.app.currence.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import net.deubzer.app.jetpacktutorial.datastore.Exchange
-import net.deubzer.app.jetpacktutorial.util.CurrencyEnum
-import net.deubzer.app.jetpacktutorial.util.calculateCurrencies
+import net.deubzer.app.currence.util.CurrencyEnum
+import net.deubzer.app.currence.util.calculateCurrencies
 
 
 class CurrencyViewModel : ViewModel() {
-
-    private var exchangeDatastore: DataStore<Exchange>? = null
-
 
     //todo: change to string, do parsing in sanitize! Float causes weird typing in the inputfield.
     // probably do a shadow state field
@@ -68,10 +63,6 @@ class CurrencyViewModel : ViewModel() {
             "Dinar" -> currencyTo.value = CurrencyEnum.DIN
         }
         reCalcBottom()
-    }
-
-    fun setRepository(eDs: DataStore<Exchange>) {
-        if (exchangeDatastore == null) exchangeDatastore = eDs
     }
 
     fun changeTop(it: Float?) {
