@@ -1,4 +1,4 @@
-package net.deubzer.app.jetpacktutorial.ui.theme
+package net.deubzer.app.currence.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

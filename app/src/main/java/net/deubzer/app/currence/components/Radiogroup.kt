@@ -1,4 +1,4 @@
-package net.deubzer.app.jetpacktutorial.components
+package net.deubzer.app.currence.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
@@ -11,14 +11,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import net.deubzer.app.jetpacktutorial.ui.theme.JetpacktutorialTheme
-import net.deubzer.app.jetpacktutorial.viewmodel.CurrencyViewModel
+import net.deubzer.app.currence.ui.theme.JetpacktutorialTheme
+import net.deubzer.app.currence.viewmodel.CurrencyViewModel
 
 @Composable
 @Preview
 fun PreviewRadioButtonSample() {
     JetpacktutorialTheme {
-        var vm = CurrencyViewModel()
+        val vm = CurrencyViewModel()
         RadioButtonCurrencyChoice(listOf("Lewa","Euro"), vm, 1)
     }
 }

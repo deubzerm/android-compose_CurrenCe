@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package net.deubzer.app.jetpacktutorial.ui.theme
+package net.deubzer.app.currence.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
