@@ -1,10 +1,10 @@
-package net.deubzer.app.currence
+package net.deubzer.app.currence.ui
 
 import android.content.res.Configuration
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import net.deubzer.app.currence.CurrenCeApplication
 import net.deubzer.app.currence.components.RadioButtonCurrencyChoice
 import net.deubzer.app.currence.data.CurrencyRateRepository
 import net.deubzer.app.currence.ui.theme.JetpacktutorialTheme
@@ -27,13 +28,14 @@ import net.deubzer.app.currence.util.CurrencyEnum
 import net.deubzer.app.currence.viewmodel.CurrencyViewModel
 import net.deubzer.app.currence.viewmodel.CurrencyViewModelFactory
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
 
     private val viewModel: CurrencyViewModel by viewModels { CurrencyViewModelFactory() }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val appContainer = (application as CurrenCeApplication).container
 
         super.onCreate(savedInstanceState)
         setContent {
@@ -95,6 +97,9 @@ fun CurrencyMain(viewModel: CurrencyViewModel) {
         Spacer(modifier = Modifier.height(40.dp))
         CurrencyBottomInput(viewModel)
         RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro", "Dinar", "Shekel", "Lira"), viewModel, 2,viewModel.currencyBottom.value.ordinal)
+        Button(onClick = { /*TODO*/ }) {
+            
+        }
     }
 }
 
