@@ -1,6 +1,7 @@
 package net.deubzer.app.currence.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -30,8 +31,8 @@ class CurrencyViewModel (private val currencyRateRepository: CurrencyRateReposit
     val amountTop = mutableStateOf("")
     val amountBottom = mutableStateOf("")
 
-    val currencyFrom = mutableStateOf(CurrencyEnum.LEW)
-    val currencyTo = mutableStateOf(CurrencyEnum.EUR)
+    val currencyTop = mutableStateOf(CurrencyEnum.LEW)
+    val currencyBottom = mutableStateOf(CurrencyEnum.EUR)
 
 
 
@@ -41,19 +42,19 @@ class CurrencyViewModel (private val currencyRateRepository: CurrencyRateReposit
 
     private fun reCalcTop() {
         this.amountTop.value = calculateCurrencies(
-            amountTop.value.toConvertableFloat(), Pair(currencyFrom.value, currencyTo.value)
+            amountTop.value.toConvertableFloat(), Pair(currencyTop.value, currencyBottom.value)
         ).first.toString()
         this.amountBottom.value = calculateCurrencies(
-            amountTop.value.toConvertableFloat(), Pair(currencyFrom.value, currencyTo.value)
+            amountTop.value.toConvertableFloat(), Pair(currencyTop.value, currencyBottom.value)
         ).second.toString()
     }
 
     private fun reCalcBottom() {
         this.amountBottom.value = calculateCurrencies(
-            amountBottom.value.toConvertableFloat(), Pair(currencyTo.value, currencyFrom.value)
+            amountBottom.value.toConvertableFloat(), Pair(currencyBottom.value, currencyTop.value)
         ).first.toString()
         this.amountTop.value = calculateCurrencies(
-            amountBottom.value.toConvertableFloat(), Pair(currencyTo.value, currencyFrom.value)
+            amountBottom.value.toConvertableFloat(), Pair(currencyBottom.value, currencyTop.value)
         ).second.toString()
     }
 
@@ -63,25 +64,21 @@ class CurrencyViewModel (private val currencyRateRepository: CurrencyRateReposit
         this.amountTop.value = ""
     }
 
-
-    fun setCurrencyFrom(text: String) {
+    private fun setCurrency(
+        text: String,
+        toporfromcurr: MutableState<CurrencyEnum>,
+        calculatefunction: () -> Unit
+    ) {
         when (text) {
-            "Lewa" -> currencyFrom.value = CurrencyEnum.LEW
-            "Euro" -> currencyFrom.value = CurrencyEnum.EUR
-            "Dinar" -> currencyFrom.value = CurrencyEnum.DIN
+            "Lewa" -> toporfromcurr.value = CurrencyEnum.LEW
+            "Euro" -> toporfromcurr.value = CurrencyEnum.EUR
+            "Dinar" -> toporfromcurr.value = CurrencyEnum.DIN
+            "Shekel" -> toporfromcurr.value = CurrencyEnum.NIS
+            "Lira" -> toporfromcurr.value = CurrencyEnum.TRY
         }
-        reCalcTop()
+        calculatefunction()
     }
 
-
-    fun setCurrencyTo(text: String) {
-        when (text) {
-            "Lewa" -> currencyTo.value = CurrencyEnum.LEW
-            "Euro" -> currencyTo.value = CurrencyEnum.EUR
-            "Dinar" -> currencyTo.value = CurrencyEnum.DIN
-        }
-        reCalcBottom()
-    }
 
     fun changeTop(it: Float?) {
         if (it != null) {
@@ -101,10 +98,18 @@ class CurrencyViewModel (private val currencyRateRepository: CurrencyRateReposit
         Log.d("radiogroup set value", "$radioSetterMode: $value")
 
         when(radioSetterMode){
-            1 -> setCurrencyFrom(value)
-            2 -> setCurrencyTo(value)
+            1 -> setCurrency(value, getTopCurrency()) { reCalcBottom() }//setCurrencyFrom(value)
+            2 -> setCurrency(value, getBotCurrency()) { reCalcTop() }
         }
     }
+
+    private fun getTopCurrency(): MutableState<CurrencyEnum> {
+        return currencyTop
+    }
+    private fun getBotCurrency(): MutableState<CurrencyEnum> {
+        return currencyBottom
+    }
+
 }
 
 private fun String.toConvertableFloat(): Float {

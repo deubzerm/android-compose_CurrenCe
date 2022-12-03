@@ -64,8 +64,8 @@ fun PreviewCurrencyMain() {
     val repository = CurrencyRateRepository
 
     val viewModel = CurrencyViewModel(repository)
-    viewModel.currencyFrom.value = CurrencyEnum.LEW
-    viewModel.currencyTo.value = CurrencyEnum.EUR
+    viewModel.currencyTop.value = CurrencyEnum.LEW
+    viewModel.currencyBottom.value = CurrencyEnum.EUR
     JetpacktutorialTheme {
         CurrencyMain(viewModel)
     }
@@ -90,13 +90,11 @@ fun CurrencyMain(viewModel: CurrencyViewModel) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro", "Dinar"), viewModel, 1, viewModel.currencyFrom.value.ordinal)
+        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro", "Dinar", "Shekel", "Lira"), viewModel, 1, viewModel.currencyTop.value.ordinal)
         CurrencyTopInput(viewModel)
         Spacer(modifier = Modifier.height(40.dp))
         CurrencyBottomInput(viewModel)
-//        Button(onClick = { /*TODO*/ }) {
-//        }
-        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro", "Dinar"), viewModel, 2,viewModel.currencyTo.value.ordinal)
+        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro", "Dinar", "Shekel", "Lira"), viewModel, 2,viewModel.currencyBottom.value.ordinal)
     }
 }
 
@@ -112,7 +110,7 @@ fun CurrencyTopInput(currencyVM: CurrencyViewModel) {
         maxLines = 1,
         label = {
             Text(
-                text = currencyVM.currencyFrom.value.name
+                text = currencyVM.currencyTop.value.name
             )
              },
         modifier = Modifier
@@ -145,7 +143,7 @@ private fun CurrencyBottomInput(currencyVM: CurrencyViewModel) {
         maxLines = 1,
         label = {
             Text(
-                text = currencyVM.currencyTo.value.name
+                text = currencyVM.currencyBottom.value.name
         ) },
         trailingIcon = {
             Icon(
