@@ -1,5 +1,6 @@
 package net.deubzer.app.currence
 
+import net.deubzer.app.currence.data.CurrencyRateRepository
 import net.deubzer.app.currence.util.CurrencyEnum
 import net.deubzer.app.currence.util.calculateCurrencies
 import org.junit.Assert
@@ -18,5 +19,25 @@ class CurrencyConvertUnitTest {
         Assert.assertEquals(
             calculateCurrencies(4F, Pair(CurrencyEnum.EUR,CurrencyEnum.EUR)).second, 4f)
 
+    }
+
+    @Test
+    fun testRateRepository(){
+        val raterepo = CurrencyRateRepository
+
+        Assert.assertEquals(
+            raterepo.getExchangeRate(Pair(CurrencyEnum.LEW,CurrencyEnum.EUR)),0.51f )
+
+        raterepo.addExchangeRate(Pair(CurrencyEnum.NIS,CurrencyEnum.LEW),5f)
+        Assert.assertEquals(
+            raterepo.getExchangeRate(Pair(CurrencyEnum.NIS,CurrencyEnum.LEW)), 5f)
+
+        raterepo.addExchangeRate(Pair(CurrencyEnum.NIS,CurrencyEnum.LEW),6f)
+        Assert.assertEquals(
+            raterepo.getExchangeRate(Pair(CurrencyEnum.NIS,CurrencyEnum.LEW)), 6f)
+
+        raterepo.updateExchangeRate(Pair(CurrencyEnum.NIS,CurrencyEnum.LEW),5f)
+        Assert.assertEquals(
+            raterepo.getExchangeRate(Pair(CurrencyEnum.NIS,CurrencyEnum.LEW)), 5f)
     }
 }

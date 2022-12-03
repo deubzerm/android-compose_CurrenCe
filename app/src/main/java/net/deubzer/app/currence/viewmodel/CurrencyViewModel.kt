@@ -1,13 +1,28 @@
 package net.deubzer.app.currence.viewmodel
 
+import android.util.Log
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import net.deubzer.app.currence.data.CurrencyRateRepository
 import net.deubzer.app.currence.util.CurrencyEnum
 import net.deubzer.app.currence.util.calculateCurrencies
 
 
-class CurrencyViewModel : ViewModel() {
+class CurrencyViewModel (private val currencyRateRepository: CurrencyRateRepository) : ViewModel() {
+
+    var isSnackBarShowing: Boolean by mutableStateOf(false)
+        private set
+
+    private fun showSnackBar() {
+        isSnackBarShowing = true
+    }
+
+    fun dismissSnackBar() {
+        isSnackBarShowing = false
+    }
 
     //todo: change to string, do parsing in sanitize! Float causes weird typing in the inputfield.
     // probably do a shadow state field
@@ -18,7 +33,10 @@ class CurrencyViewModel : ViewModel() {
     val currencyFrom = mutableStateOf(CurrencyEnum.LEW)
     val currencyTo = mutableStateOf(CurrencyEnum.EUR)
 
-    init {
+
+
+    private fun addExchangeRate(ratepair : Pair<CurrencyEnum,CurrencyEnum>, value: Float){
+        currencyRateRepository.addExchangeRate(ratepair,value)
     }
 
     private fun reCalcTop() {
@@ -78,6 +96,15 @@ class CurrencyViewModel : ViewModel() {
             reCalcBottom()
         }
     }
+
+    fun onclickRadio(radioSetterMode: Int, value: String) {
+        Log.d("radiogroup set value", "$radioSetterMode: $value")
+
+        when(radioSetterMode){
+            1 -> setCurrencyFrom(value)
+            2 -> setCurrencyTo(value)
+        }
+    }
 }
 
 private fun String.toConvertableFloat(): Float {
@@ -89,7 +116,7 @@ class CurrencyViewModelFactory : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CurrencyViewModel::class.java)) {
-            return CurrencyViewModel() as T
+            return CurrencyViewModel(CurrencyRateRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

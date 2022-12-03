@@ -43,6 +43,7 @@ content: @Composable () -> Unit
 
     MaterialTheme(
         //colorScheme = colorScheme,
+
         colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
         typography = Typography,
         content = {

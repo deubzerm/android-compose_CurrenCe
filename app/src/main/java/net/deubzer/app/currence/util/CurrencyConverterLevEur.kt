@@ -1,20 +1,8 @@
 package net.deubzer.app.currence.util
 
+import net.deubzer.app.currence.data.CurrencyRateRepository
 
-val exchangeDictionary = mapOf(
-    Pair(CurrencyEnum.EUR, CurrencyEnum.LEW) to 1.96f,
-    Pair(CurrencyEnum.LEW, CurrencyEnum.EUR) to 0.51f,
-
-    Pair(CurrencyEnum.EUR, CurrencyEnum.NIS) to 5.58f,
-    Pair(CurrencyEnum.NIS, CurrencyEnum.EUR) to 0.28f,
-
-    Pair(CurrencyEnum.EUR, CurrencyEnum.DIN) to 117.31f,
-    Pair(CurrencyEnum.DIN, CurrencyEnum.EUR) to 0.0085f,
-
-    Pair(CurrencyEnum.EUR, CurrencyEnum.TRY) to 19.63,
-    Pair(CurrencyEnum.TRY, CurrencyEnum.EUR) to 0.051f,
-)
-
+val repo = CurrencyRateRepository
 
 //fun calcEur (leva: String, currencytype: CurrencyEnum): String {
 //    return convertCurrency(leva, lev2eur).toString()
@@ -39,19 +27,8 @@ fun calculateCurrencies(
         baseAmount,
         convertCurrency(
             baseAmount,
-            (exchangeDictionary[exchangeKey] as Float?).toValueIfUnfound(exchangeKey)
+            repo.getExchangeRate(exchangeKey)
         )
     )
 }
-
-/**
- * If same keys, conversion will be 1, if unfound return 0
- */
-private fun Float?.toValueIfUnfound(exchangeKey: Pair<CurrencyEnum, CurrencyEnum>): Float =
-    if (exchangeKey.first == exchangeKey.second)
-        1f
-    else
-        this ?: 0f
-
-
 

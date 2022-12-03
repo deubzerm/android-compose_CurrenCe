@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -14,12 +15,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.deubzer.app.currence.components.RadioButtonCurrencyChoice
+import net.deubzer.app.currence.data.CurrencyRateRepository
 import net.deubzer.app.currence.ui.theme.JetpacktutorialTheme
 import net.deubzer.app.currence.ui.theme.PADDING_DEFAULT
+import net.deubzer.app.currence.util.CurrencyEnum
 import net.deubzer.app.currence.viewmodel.CurrencyViewModel
 import net.deubzer.app.currence.viewmodel.CurrencyViewModelFactory
 
@@ -57,7 +61,11 @@ class MainActivity : ComponentActivity() {
 )
 @Composable
 fun PreviewCurrencyMain() {
-    val viewModel = CurrencyViewModel()
+    val repository = CurrencyRateRepository
+
+    val viewModel = CurrencyViewModel(repository)
+    viewModel.currencyFrom.value = CurrencyEnum.LEW
+    viewModel.currencyTo.value = CurrencyEnum.EUR
     JetpacktutorialTheme {
         CurrencyMain(viewModel)
     }
@@ -65,24 +73,36 @@ fun PreviewCurrencyMain() {
 
 @Composable
 fun CurrencyMain(viewModel: CurrencyViewModel) {
+
+
+    val onDismissSnackBarState by rememberUpdatedState(newValue = viewModel.isSnackBarShowing)
+
+    if(onDismissSnackBarState){
+        val snackBarMessage = "Message"
+        //LaunchedEffect(
+    }
+    val col = Color.hsl(202f,.93f,.82f,)
+
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(col),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro", "Dinar"), viewModel, 1)
-        CurrencyLevInput(viewModel)
+        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro", "Dinar"), viewModel, 1, viewModel.currencyFrom.value.ordinal)
+        CurrencyTopInput(viewModel)
         Spacer(modifier = Modifier.height(40.dp))
-        CurrencyEurInput(viewModel)
-        Button(onClick = { /*TODO*/ }) {
-        }
-        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro", "Dinar"), viewModel, 2)
+        CurrencyBottomInput(viewModel)
+//        Button(onClick = { /*TODO*/ }) {
+//        }
+        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro", "Dinar"), viewModel, 2,viewModel.currencyTo.value.ordinal)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CurrencyLevInput(currencyVM: CurrencyViewModel) {
+fun CurrencyTopInput(currencyVM: CurrencyViewModel) {
     OutlinedTextField(
         value = currencyVM.amountTop.value,
         onValueChange = {
@@ -90,7 +110,11 @@ fun CurrencyLevInput(currencyVM: CurrencyViewModel) {
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
         maxLines = 1,
-        label = { Text("лева") },
+        label = {
+            Text(
+                text = currencyVM.currencyFrom.value.name
+            )
+             },
         modifier = Modifier
             .fillMaxWidth()
             .padding(PADDING_DEFAULT),
@@ -109,7 +133,7 @@ fun CurrencyLevInput(currencyVM: CurrencyViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CurrencyEurInput(currencyVM: CurrencyViewModel) {
+private fun CurrencyBottomInput(currencyVM: CurrencyViewModel) {
 
     OutlinedTextField(
         value = currencyVM.amountBottom.value,
@@ -119,7 +143,10 @@ private fun CurrencyEurInput(currencyVM: CurrencyViewModel) {
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         maxLines = 1,
-        label = { Text("€ur") },
+        label = {
+            Text(
+                text = currencyVM.currencyTo.value.name
+        ) },
         trailingIcon = {
             Icon(
                 Icons.Default.Clear,
