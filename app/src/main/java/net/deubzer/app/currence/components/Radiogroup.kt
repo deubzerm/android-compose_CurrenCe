@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import net.deubzer.app.currence.ui.theme.JetpacktutorialTheme
 import net.deubzer.app.currence.viewmodel.CurrencyViewModel
 
@@ -18,8 +19,7 @@ import net.deubzer.app.currence.viewmodel.CurrencyViewModel
 @Preview
 fun PreviewRadioButtonSample() {
     JetpacktutorialTheme {
-        val vm = CurrencyViewModel()
-        RadioButtonCurrencyChoice(listOf("Lewa","Euro"), vm, 1)
+        RadioButtonCurrencyChoice(listOf("Lewa","Euro"), viewModel = hiltViewModel<CurrencyViewModel>(), 1)
     }
 }
 

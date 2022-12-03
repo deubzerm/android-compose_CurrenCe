@@ -17,24 +17,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import net.deubzer.app.currence.components.RadioButtonCurrencyChoice
-import net.deubzer.app.currence.ui.theme.JetpacktutorialTheme
 import net.deubzer.app.currence.ui.theme.PADDING_DEFAULT
 import net.deubzer.app.currence.viewmodel.CurrencyViewModel
-import net.deubzer.app.currence.viewmodel.CurrencyViewModelFactory
 
-class MainActivity : ComponentActivity() {
+@AndroidEntryPoint
+class CurrenCeMainActivity : ComponentActivity() {
 
-
-    private val viewModel: CurrencyViewModel by viewModels { CurrencyViewModelFactory() }
-
+    private val currenCeVM: CurrencyViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContent {
-            JetpacktutorialTheme {
-                CurrencyMain(viewModel)
+            MaterialTheme  {
+                CurrencyMain(currenCeVM)
             }
         }
     }
@@ -53,30 +52,33 @@ class MainActivity : ComponentActivity() {
     "Screen (dark)",
     showSystemUi = true,
     showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES
+    uiMode = Configuration.UI_MODE_NIGHT_NO
 )
 @Composable
 fun PreviewCurrencyMain() {
-    val viewModel = CurrencyViewModel()
-    JetpacktutorialTheme {
-        CurrencyMain(viewModel)
+
+    val currVM: CurrencyViewModel = hiltViewModel()
+
+    MaterialTheme {
+        CurrencyMain(currVM)
     }
 }
 
 @Composable
-fun CurrencyMain(viewModel: CurrencyViewModel) {
+fun CurrencyMain(currenCeVM: CurrencyViewModel) {
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro", "Dinar"), viewModel, 1)
-        CurrencyLevInput(viewModel)
+        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro", "Dinar"), viewModel = currenCeVM, 1)
+        CurrencyLevInput(currenCeVM)
         Spacer(modifier = Modifier.height(40.dp))
-        CurrencyEurInput(viewModel)
+        CurrencyEurInput(currenCeVM)
         Button(onClick = { /*TODO*/ }) {
         }
-        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro", "Dinar"), viewModel, 2)
+        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro", "Dinar"), currenCeVM, 2)
     }
 }
 

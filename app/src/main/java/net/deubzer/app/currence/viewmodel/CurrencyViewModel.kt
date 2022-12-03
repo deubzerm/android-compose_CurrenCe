@@ -1,25 +1,29 @@
 package net.deubzer.app.currence.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import dagger.hilt.android.lifecycle.HiltViewModel
+import net.deubzer.app.currence.data.ICurrencyRateRepository
 import net.deubzer.app.currence.util.CurrencyEnum
 import net.deubzer.app.currence.util.calculateCurrencies
+import javax.inject.Inject
 
+interface ICurrencyViewModel{
 
-class CurrencyViewModel : ViewModel() {
+}
 
-    //todo: change to string, do parsing in sanitize! Float causes weird typing in the inputfield.
-    // probably do a shadow state field
-    // idea: store old values in  room
+@HiltViewModel
+class CurrencyViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
+    private val repository: ICurrencyRateRepository
+) : ViewModel (), ICurrencyViewModel {
+
     val amountTop = mutableStateOf("")
     val amountBottom = mutableStateOf("")
 
-    val currencyFrom = mutableStateOf(CurrencyEnum.LEW)
-    val currencyTo = mutableStateOf(CurrencyEnum.EUR)
-
-    init {
-    }
+    private val currencyFrom = mutableStateOf(CurrencyEnum.LEW)
+    private val currencyTo = mutableStateOf(CurrencyEnum.EUR)
 
     private fun reCalcTop() {
         this.amountTop.value = calculateCurrencies(
@@ -85,12 +89,12 @@ private fun String.toConvertableFloat(): Float {
     return this.toFloat()
 }
 
-class CurrencyViewModelFactory : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(CurrencyViewModel::class.java)) {
-            return CurrencyViewModel() as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
+//class CurrencyViewModelFactory : ViewModelProvider.Factory {
+//    @Suppress("UNCHECKED_CAST")
+//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+//        if (modelClass.isAssignableFrom(CurrencyViewModel::class.java)) {
+//            return CurrencyViewModel() as T
+//        }
+//        throw IllegalArgumentException("Unknown ViewModel class")
+//    }
+//}
