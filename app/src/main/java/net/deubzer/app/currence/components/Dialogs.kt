@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import net.deubzer.app.currence.ui.theme.JetpacktutorialTheme
+import net.deubzer.app.currence.ui.theme.CurrenCeTheme
 
 //@Composable
 //public fun AlertDialog(
@@ -65,7 +65,7 @@ fun TextButton(
 @Preview(name = "textbutton")
 @Composable
 fun PreviewTextButton (){
-    JetpacktutorialTheme {
+    CurrenCeTheme {
         TextButton(onClick = { /*TODO*/ }) {
             Text(text = "ok")
         }
@@ -75,7 +75,7 @@ fun PreviewTextButton (){
 @Preview(name = "SimplAlertDialog")
 @Composable
 fun PreviewAlertDialog (){
-    JetpacktutorialTheme {
+    CurrenCeTheme {
         SimpleAlertDialog(show = true, onDismiss = { /*TODO*/ }) {
 
         }

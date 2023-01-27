@@ -63,7 +63,7 @@ fun MessageCard(message: String, info: String) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    JetpacktutorialTheme {
+    CurrenCeTheme {
         MessageCard(message = "bob am 12.4.2022 um 13.33", info = " 12E 14N")
     }
 
@@ -77,7 +77,7 @@ fun DefaultPreview() {
 )
 @Composable
 fun PreviewMessageCard() {
-    JetpacktutorialTheme {
+    CurrenCeTheme {
         MessageCard(message = "Rabbitmq könnte HIER was schreiben!", info = "48.1N 10.2E")
     }
 }

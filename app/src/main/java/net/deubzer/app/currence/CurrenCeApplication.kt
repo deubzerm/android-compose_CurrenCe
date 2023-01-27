@@ -12,4 +12,8 @@ class CurrenCeApplication : Application() {
         super.onCreate()
         container = AppContainerImpl(this)
     }
+
+    fun getCurrenCeContainer() : AppContainer {
+        return container
+    }
 }

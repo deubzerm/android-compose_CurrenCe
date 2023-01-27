@@ -5,7 +5,18 @@ plugins {
 }
 apply plugin: 'kotlin-android'
 
+def getGitBranchName() {
+    def branch = ""
+    def proc = "git rev-parse --abbrev-ref HEAD".execute()
+    proc.in.eachLine { line -> branch = line }
+    proc.err.eachLine { line -> println line }
+    proc.waitFor()
+    branch
+}
+
 android {
+    // function to read current git branch name
+
 
     namespace 'net.deubzer.app.currence'
 
@@ -19,7 +30,7 @@ android {
         targetSdk sdkversion
         versionCode 1
         versionName "1.0"
-
+        resValue("string", "gitBranch", getGitBranchName())
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
@@ -53,15 +64,12 @@ android {
 }
 
 dependencies {
-    def nav_version = '2.5.3'
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-    // Feature module Support
-    implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
-    // Testing Navigation
-    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
-    // Jetpack Compose Integration
-    implementation "androidx.navigation:navigation-compose:$nav_version"
+    // below dependency for using the retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    implementation "androidx.navigation:navigation-compose:$rootProject.composeNavigationVersion"
+
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 

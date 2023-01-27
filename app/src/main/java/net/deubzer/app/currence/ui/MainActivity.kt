@@ -2,9 +2,9 @@ package net.deubzer.app.currence.ui
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,28 +19,30 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import net.deubzer.app.currence.CurrenCeApplication
+import net.deubzer.app.currence.R
 import net.deubzer.app.currence.components.RadioButtonCurrencyChoice
 import net.deubzer.app.currence.data.CurrencyRateRepository
-import net.deubzer.app.currence.ui.theme.JetpacktutorialTheme
+import net.deubzer.app.currence.ui.theme.CurrenCeTheme
 import net.deubzer.app.currence.ui.theme.PADDING_DEFAULT
 import net.deubzer.app.currence.util.CurrencyEnum
 import net.deubzer.app.currence.viewmodel.CurrencyViewModel
-import net.deubzer.app.currence.viewmodel.CurrencyViewModelFactory
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
-
-    private val viewModel: CurrencyViewModel by viewModels { CurrencyViewModelFactory() }
-
+    //private val viewModel: CurrencyViewModel by viewModels { CurrencyViewModelFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val appContainer = (application as CurrenCeApplication).container
-
+        Log.i("BRANCH", "Branch used for Build" + getString(R.string.gitBranch))
         super.onCreate(savedInstanceState)
         setContent {
-            JetpacktutorialTheme {
-                CurrencyMain(viewModel)
+            CurrenCeTheme {
+
+                    CurrencyMain(appContainer.currenyMainViewModel)
             }
         }
     }
@@ -68,7 +70,7 @@ fun PreviewCurrencyMain() {
     val viewModel = CurrencyViewModel(repository)
     viewModel.currencyTop.value = CurrencyEnum.LEW
     viewModel.currencyBottom.value = CurrencyEnum.EUR
-    JetpacktutorialTheme {
+    CurrenCeTheme {
         CurrencyMain(viewModel)
     }
 }
@@ -84,7 +86,7 @@ fun CurrencyMain(viewModel: CurrencyViewModel) {
         //LaunchedEffect(
     }
     val col = Color.hsl(202f,.93f,.82f,)
-
+    val navController = rememberNavController()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -92,6 +94,10 @@ fun CurrencyMain(viewModel: CurrencyViewModel) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        NavHost(navController = navController, startDestination = Home.route ){
+            composable(route = Home.route){Home.screen}
+            composable(route = AddCurrency.route){AddCurrency.screen}
+        }
         RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro", "Dinar", "Shekel", "Lira"), viewModel, 1, viewModel.currencyTop.value.ordinal)
         CurrencyTopInput(viewModel)
         Spacer(modifier = Modifier.height(40.dp))

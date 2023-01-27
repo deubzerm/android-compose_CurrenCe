@@ -36,7 +36,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun JetpacktutorialTheme(
+fun CurrenCeTheme(
 darkTheme: Boolean = isSystemInDarkTheme(),
 content: @Composable () -> Unit
 ) {
