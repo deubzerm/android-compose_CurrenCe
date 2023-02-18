@@ -5,33 +5,82 @@ plugins {
 }
 apply plugin: 'kotlin-android'
 
+static def gitBranch() {
+    def branch = ""
+    def proc = "git rev-parse --abbrev-ref HEAD".execute()
+    proc.in.eachLine { line -> branch = line }
+    proc.err.eachLine { line -> println line }
+    proc.waitFor()
+    branch
+}
+
 android {
+
 
     namespace 'net.deubzer.app.currence'
 
     def sdkversion = 33
     compileSdk sdkversion
 
+    signingConfigs {
+        release {
+            def signingPropertiesFile = rootProject.file('signing.properties')
+            if(signingPropertiesFile.exists()){
+                def signingProperties = new Properties()
+                signingProperties.load(new FileInputStream(signingPropertiesFile))
+
+                storeFile file(signingProperties['storeFile'])
+                storePassword signingProperties['storePassword']
+                keyAlias signingProperties['keyAlias']
+                keyPassword signingProperties['keyPassword']
+            } else {
+                println "Check paths of your signing.properties and the Keystore!!!"
+                android.buildTypes.release.signingConfig = null
+            }
+        }
+    }
 
     defaultConfig {
         applicationId "net.deubzer.app.currence"
         minSdk 29
         targetSdk sdkversion
         versionCode 1
-        versionName "1.0"
-
+        versionName "0.0.01"
+        resValue "string", "gitBranch", gitBranch()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
         }
     }
-
     buildTypes {
         release {
+            signingConfig signingConfigs.release
+            debuggable true
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile(
+                    'proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
+
+        }
+        debug {
+            debuggable true
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    // Specifies one flavor dimension.
+    flavorDimensions "currence"
+    productFlavors {
+        full {
+            dimension "currence"
+        }
+        martin {
+            dimension "currence"
+            applicationIdSuffix ".martin"
+            versionNameSuffix "-martin"
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -43,7 +92,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerExtensionVersion = "1.4.0"
     }
     packagingOptions {
         resources {
@@ -51,6 +100,8 @@ android {
         }
     }
 }
+
+
 
 dependencies {
     implementation 'androidx.datastore:datastore:1.0.0'
@@ -61,20 +112,20 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
 
     implementation "androidx.compose.ui:ui:$compose_version"
-    implementation 'androidx.compose.material3:material3:1.1.0-alpha02'
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation 'androidx.compose.material3:material3:1.1.0-alpha06'
+    implementation "androidx.compose.ui:ui-tooling-preview:1.4.0-beta01"
 
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
-    implementation 'androidx.activity:activity-compose:1.6.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.0-beta01'
+    implementation 'androidx.activity:activity-compose:1.8.0-alpha01'
 
     testImplementation 'junit:junit:4.13.2'
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.4.0-beta01"
 
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:1.4.0-beta01"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:1.4.0-beta01"
     implementation "androidx.core:core-ktx:1.9.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 

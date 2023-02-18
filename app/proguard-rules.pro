@@ -20,3 +20,5 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+# You can specify any path and filename.
+-printconfiguration tmp/full-r8-config.txt

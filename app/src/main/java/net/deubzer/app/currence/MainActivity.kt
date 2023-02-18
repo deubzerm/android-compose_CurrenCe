@@ -2,6 +2,7 @@ package net.deubzer.app.currence
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -34,7 +35,7 @@ class MainActivity : ComponentActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        Log.i("CURRENCE:BRANCH", "Build from branch: " +getString(R.string.gitBranch))
         super.onCreate(savedInstanceState)
         setContent {
             JetpacktutorialTheme {
@@ -74,13 +75,6 @@ fun PreviewCurrencyMain() {
 @Composable
 fun CurrencyMain(viewModel: CurrencyViewModel) {
 
-
-    val onDismissSnackBarState by rememberUpdatedState(newValue = viewModel.isSnackBarShowing)
-
-    if(onDismissSnackBarState){
-        val snackBarMessage = "Message"
-        //LaunchedEffect(
-    }
     val col = Color.hsl(202f,.93f,.82f,)
 
     Column(
