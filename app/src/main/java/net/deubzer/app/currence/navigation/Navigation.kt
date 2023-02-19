@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import net.deubzer.app.currence.ui.CurrencyChangeFactor
 import net.deubzer.app.currence.ui.CurrencyMain
+import net.deubzer.app.currence.viewmodel.CurrencyChangeViewModel
 import net.deubzer.app.currence.viewmodel.CurrencyViewModel
 
 @Composable
@@ -39,11 +40,11 @@ fun Navigation(
                 },
             ),
     ) {
-      CurrencyChangeFactor(
-          factorA = "A",
-          factorB = "B",
-          navController,
-      )
+        val vm = hiltViewModel<CurrencyChangeViewModel>()
+        CurrencyChangeFactor(
+            vm,
+            navController,
+        )
     }
   }
 }

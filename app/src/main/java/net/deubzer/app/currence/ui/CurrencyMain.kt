@@ -67,15 +67,20 @@ fun CurrencyMain(viewModel: CurrencyViewModel, branchInfo: String, navController
       verticalArrangement = Arrangement.Center,
       horizontalAlignment = Alignment.CenterHorizontally,
   ) {
+    Spacer(modifier = Modifier.height(15.dp))
     Button(
         onClick = { navController.navigate(Screen.ChangeCurrencyFactorScreen.route) },
-        modifier = Modifier.align(alignment = Alignment.CenterHorizontally).size(180.dp),
+        modifier = Modifier
+            .align(alignment = Alignment.CenterHorizontally)
+            .size(180.dp),
     ) {
       Image(
           painter =
               painterResource(id = net.deubzer.app.currence.R.mipmap.ic_currence_logo_foreground),
           contentDescription = "CurrenCe App Logo",
-          modifier = Modifier.size(180.dp).clip(CircleShape),
+          modifier = Modifier
+              .size(180.dp)
+              .clip(CircleShape),
           // .border(2.dp, MaterialTheme.colorScheme.secondary, CircleShape)
           // .align(alignment = CenterHorizontally)
       )
@@ -115,7 +120,9 @@ fun CurrencyTopInput(currencyVM: CurrencyViewModel) {
             text = currencyVM.currencyTop.value.name,
         )
       },
-      modifier = Modifier.fillMaxWidth().padding(PADDING_DEFAULT),
+      modifier = Modifier
+          .fillMaxWidth()
+          .padding(PADDING_DEFAULT),
       trailingIcon = {
         Icon(
             Icons.Default.Clear,
@@ -146,6 +153,8 @@ private fun CurrencyBottomInput(currencyVM: CurrencyViewModel) {
             modifier = Modifier.clickable { currencyVM.clear() },
         )
       },
-      modifier = Modifier.fillMaxWidth().padding(PADDING_DEFAULT),
+      modifier = Modifier
+          .fillMaxWidth()
+          .padding(PADDING_DEFAULT),
   )
 }

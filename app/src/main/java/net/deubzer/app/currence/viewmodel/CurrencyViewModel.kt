@@ -23,11 +23,6 @@ constructor(
   val currencyTop = mutableStateOf(CurrencyEnum.LEW)
   val currencyBottom = mutableStateOf(CurrencyEnum.EUR)
 
-  @Suppress("unused")
-  private fun addExchangeRate(ratepair: Pair<CurrencyEnum, CurrencyEnum>, value: Float) {
-    repo.addExchangeRate(ratepair, value)
-  }
-
   private fun reCalcTop() {
     this.amountTop.value =
         calculateCurrencies(
@@ -115,18 +110,6 @@ constructor(
   private fun getBotCurrency(): MutableState<CurrencyEnum> {
     return currencyBottom
   }
-
-  //    companion object {
-  //        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory{
-  //            override fun <T : ViewModel> create(
-  //                modelClass: Class<T>,
-  //                extras: CreationExtras): T {
-  //                    // Get the Application object from extras
-  //                    val application = checkNotNull(extras[APPLICATION_KEY])
-  //                    return CurrencyViewModel(CurrencyRateRepository()).repo as T
-  //            }
-  //        }
-  //    }
 }
 
 private fun String.toConvertableFloat(): Float {
@@ -134,12 +117,3 @@ private fun String.toConvertableFloat(): Float {
   return this.toFloat()
 }
 
-// class CurrencyViewModelFactory : ViewModelProvider.Factory {
-//    @Suppress("UNCHECKED_CAST")
-//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-//        if (modelClass.isAssignableFrom(CurrencyViewModel::class.java)) {
-//            return CurrencyViewModel(CurrencyRateRepository(LocalContext.current)) as T
-//        }
-//        throw IllegalArgumentException("Unknown ViewModel class")
-//    }
-// }
