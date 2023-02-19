@@ -4,6 +4,7 @@
     package="net.deubzer.app.currence">
 
     <application
+        android:name=".CurrenCeApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -11,12 +12,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_currence_logo_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Jetpacktutorial"
+        android:theme="@style/Theme.CurrenCe"
         tools:targetApi="31">
         <activity
             android:name="net.deubzer.app.currence.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.Jetpacktutorial">
+            android:theme="@style/Theme.CurrenCe">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
