@@ -6,23 +6,25 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.deubzer.app.currence.components.RadioButtonCurrencyChoice
 import net.deubzer.app.currence.data.CurrencyRateRepository
-import net.deubzer.app.currence.ui.theme.JetpacktutorialTheme
+import net.deubzer.app.currence.ui.theme.CurrenCeTheme
 import net.deubzer.app.currence.ui.theme.PADDING_DEFAULT
 import net.deubzer.app.currence.util.CurrencyEnum
 import net.deubzer.app.currence.viewmodel.CurrencyViewModel
@@ -33,31 +35,27 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: CurrencyViewModel by viewModels { CurrencyViewModelFactory() }
 
+    fun getBranchInfo(): String {
+        return "Build from branch: " + getString(R.string.gitBranch) + ", Version: " + BuildConfig.VERSION_NAME
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.i("CURRENCE:BRANCH", "Build from branch: " +getString(R.string.gitBranch))
+        Log.i("CURRENCE:BRANCH", getBranchInfo())
         super.onCreate(savedInstanceState)
         setContent {
-            JetpacktutorialTheme {
-                CurrencyMain(viewModel)
+            CurrenCeTheme {
+                Surface {
+                    CurrencyMain(viewModel, getBranchInfo())
+                }
             }
         }
     }
 }
 
-
-//@Preview(
-//    //uiMode = Configuration.UI_MODE_NIGHT_YES,
-//    uiMode = 1,
-//    name = "Main",
-//    showSystemUi = true,
-//    showBackground = true
-//)
-@Preview("Screen", showSystemUi = true, showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO,
+name="LightMode")
 @Preview(
-    "Screen (dark)",
-    showSystemUi = true,
-    showBackground = true,
+    name="DarkMode",
     uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
@@ -67,30 +65,43 @@ fun PreviewCurrencyMain() {
     val viewModel = CurrencyViewModel(repository)
     viewModel.currencyTop.value = CurrencyEnum.LEW
     viewModel.currencyBottom.value = CurrencyEnum.EUR
-    JetpacktutorialTheme {
-        CurrencyMain(viewModel)
+    CurrenCeTheme {
+        Surface {
+            CurrencyMain(viewModel, "Build from branch:  main, Version: TEST")
+        }
     }
 }
 
 @Composable
-fun CurrencyMain(viewModel: CurrencyViewModel) {
-
-    val col = Color.hsl(202f,.93f,.82f,)
+fun CurrencyMain(viewModel: CurrencyViewModel, branchInfo: String) {
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(col),
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = CenterHorizontally
     ) {
-        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro", "Dinar", "Shekel", "Lira"), viewModel, 1, viewModel.currencyTop.value.ordinal)
+        Image(
+            painter = painterResource(id = R.mipmap.ic_currence_logo_foreground),
+            contentDescription = "CurrenCe App Logo",
+            modifier = Modifier
+                .size(180.dp)
+                .clip(CircleShape)
+                //.border(2.dp, MaterialTheme.colorScheme.secondary, CircleShape)
+                .align(alignment = CenterHorizontally)
+        )
+        //Text(text = "CurrenCe")
+        Spacer(modifier = Modifier.weight(0.3f,true))
+        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro"), viewModel, 1, viewModel.currencyTop.value.ordinal)
         CurrencyTopInput(viewModel)
         Spacer(modifier = Modifier.height(40.dp))
         CurrencyBottomInput(viewModel)
-        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro", "Dinar", "Shekel", "Lira"), viewModel, 2,viewModel.currencyBottom.value.ordinal)
+        RadioButtonCurrencyChoice(choices = listOf("Lewa", "Euro"), viewModel, 2,viewModel.currencyBottom.value.ordinal)
+        Spacer(modifier = Modifier.weight(0.6f,true))
+        Text(text = branchInfo)
     }
 }
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -14,13 +14,13 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.deubzer.app.currence.data.CurrencyRateRepository
-import net.deubzer.app.currence.ui.theme.JetpacktutorialTheme
+import net.deubzer.app.currence.ui.theme.CurrenCeTheme
 import net.deubzer.app.currence.viewmodel.CurrencyViewModel
 
 @Composable
 @Preview
 fun PreviewRadioButtonSample() {
-    JetpacktutorialTheme {
+    CurrenCeTheme {
         val vm = CurrencyViewModel(CurrencyRateRepository)
         RadioButtonCurrencyChoice(listOf("Lewa","Euro"), vm, 1, 0)
     }
